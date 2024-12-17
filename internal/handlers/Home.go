@@ -256,28 +256,29 @@ func AddCase(w http.ResponseWriter, r *http.Request) {
 	createdAt := sql.NullString{String: now.Format(time.RFC3339), Valid: true}
 
 	Case := models.Cases{
-		Id:                            id,
-		Case_name:                     r.FormValue("case_name"),
-		National_id:                   r.FormValue("national_id"),
-		Devices_needed_for_the_case:   r.FormValue("devices_needed_for_the_case"),
-		Total_income:                  totalIncome,
-		Fixed_expenses:                fixedExpenses,
-		Pension_from_husband:          r.FormValue("pension_from_husband"),
-		Pension_from_father:           r.FormValue("pension_from_father"),
-		Debts:                         r.FormValue("debts"),
-		Case_type:                     r.FormValue("case_type"),
-		Date_of_birth:                 sql.NullString{String: r.FormValue("date_of_birth"), Valid: true},
-		Age:                           Age,
-		Gender:                        r.FormValue("gender"),
-		Job:                           r.FormValue("job"),
-		Social_situation:              r.FormValue("social_situation"),
-		Address_from_national_id_card: r.FormValue("address_from_national_id_card"),
-		Actual_address:                r.FormValue("actual_address"),
-		District:                      r.FormValue("district"),
-		PhoneNumbers:                  sql.NullString{String: r.FormValue("phone_numbers"), Valid: true},
+		Id:                            sql.NullString{String: id, Valid: id != ""},
+		Case_name:                     sql.NullString{String: r.FormValue("case_name"), Valid: r.FormValue("case_name") != ""},
+		National_id:                   sql.NullString{String: r.FormValue("national_id"), Valid: r.FormValue("national_id") != ""},
+		Devices_needed_for_the_case:   sql.NullString{String: r.FormValue("devices_needed_for_the_case"), Valid: r.FormValue("devices_needed_for_the_case") != ""},
+		Total_income:                  sql.NullInt32{Int32: int32(totalIncome), Valid: totalIncome != 0},
+		Fixed_expenses:                sql.NullInt32{Int32: int32(fixedExpenses), Valid: fixedExpenses != 0},
+		Pension_from_husband:          sql.NullString{String: r.FormValue("pension_from_husband"), Valid: r.FormValue("pension_from_husband") != ""},
+		Pension_from_father:           sql.NullString{String: r.FormValue("pension_from_father"), Valid: r.FormValue("pension_from_father") != ""},
+		Debts:                         sql.NullString{String: r.FormValue("debts"), Valid: r.FormValue("debts") != ""},
+		Case_type:                     sql.NullString{String: r.FormValue("case_type"), Valid: r.FormValue("case_type") != ""},
+		Date_of_birth:                 sql.NullString{String: r.FormValue("date_of_birth"), Valid: r.FormValue("date_of_birth") != ""},
+		Age:                           sql.NullInt32{Int32: int32(Age), Valid: Age != 0},
+		Gender:                        sql.NullString{String: r.FormValue("gender"), Valid: r.FormValue("gender") != ""},
+		Job:                           sql.NullString{String: r.FormValue("job"), Valid: r.FormValue("job") != ""},
+		Social_situation:              sql.NullString{String: r.FormValue("social_situation"), Valid: r.FormValue("social_situation") != ""},
+		Address_from_national_id_card: sql.NullString{String: r.FormValue("address_from_national_id_card"), Valid: r.FormValue("address_from_national_id_card") != ""},
+		Actual_address:                sql.NullString{String: r.FormValue("actual_address"), Valid: r.FormValue("actual_address") != ""},
+		District:                      sql.NullString{String: r.FormValue("district"), Valid: r.FormValue("district") != ""},
+		PhoneNumbers:                  sql.NullString{String: r.FormValue("phone_numbers"), Valid: r.FormValue("phone_numbers") != ""},
 		Created_at:                    createdAt,
 		Updated_at:                    createdAt,
 	}
+
 
 	if err := Case.Create(db); err != nil {
 		middleware.ErrorResopnse(w, err)
@@ -321,7 +322,10 @@ func DeleteCase(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
 	Case := models.Cases{
-		Id: id,
+		Id: sql.NullString{
+			String: id,
+			Valid:  true,
+		},
 	}
 
 	if err := Case.Delete(db); err != nil {
@@ -333,7 +337,7 @@ func DeleteCase(w http.ResponseWriter, r *http.Request) {
 	Response := map[string]interface{}{}
 	Response["status"] = "تمت العملية بنجاح"
 
-	if err := models.CreateLogs(db, Case.Id, "حذف الحالة", userData.Id); err != nil {
+	if err := models.CreateLogs(db, Case.Id.String, "حذف الحالة", userData.Id); err != nil {
 		middleware.ErrorResopnse(w, err)
 		return
 	}
@@ -460,25 +464,29 @@ func UpdateCase(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	now := time.Now()
+	updated_at := sql.NullString{String: now.Format(time.RFC3339), Valid: true}
+
 	cases := models.Cases{
-		Id:                            casesUpdate["id"].(string),
-		Case_name:                     casesUpdate["case_name"].(string),
-		National_id:                   casesUpdate["national_id"].(string),
-		Devices_needed_for_the_case:   casesUpdate["devices_needed_for_the_case"].(string),
-		Total_income:                  total_income,
-		Age:                           age,
-		Gender:                        casesUpdate["gender"].(string),
-		Job:                           casesUpdate["job"].(string),
-		Social_situation:              casesUpdate["social_situation"].(string),
-		Address_from_national_id_card: casesUpdate["address_from_national_id_card"].(string),
-		Actual_address:                casesUpdate["actual_address"].(string),
-		District:                      casesUpdate["district"].(string),
-		Debts:                         casesUpdate["debts"].(string),
-		Pension_from_husband:          casesUpdate["pension_from_husband"].(string),
-		Pension_from_father:           casesUpdate["pension_from_father"].(string),
-		PhoneNumbers:                  sql.NullString{String: casesUpdate["phone_numbers"].(string), Valid: true},
-		Updated_at:                    sql.NullString{String: time.Now().Format("2006-01-02 15:04:05"), Valid: true},
+		Id:                            sql.NullString{String: casesUpdate["id"].(string), Valid: casesUpdate["id"].(string) != ""},
+		Case_name:                     sql.NullString{String: casesUpdate["case_name"].(string), Valid: casesUpdate["case_name"].(string) != ""},
+		National_id:                   sql.NullString{String: casesUpdate["national_id"].(string), Valid: casesUpdate["national_id"].(string) != ""},
+		Devices_needed_for_the_case:   sql.NullString{String: casesUpdate["devices_needed_for_the_case"].(string), Valid: casesUpdate["devices_needed_for_the_case"].(string) != ""},
+		Total_income:                  sql.NullInt32{Int32: int32(total_income), Valid: total_income != 0},
+		Age:                           sql.NullInt32{Int32: int32(age), Valid: age != 0},
+		Gender:                        sql.NullString{String: casesUpdate["gender"].(string), Valid: casesUpdate["gender"].(string) != ""},
+		Job:                           sql.NullString{String: casesUpdate["job"].(string), Valid: casesUpdate["job"].(string) != ""},
+		Social_situation:              sql.NullString{String: casesUpdate["social_situation"].(string), Valid: casesUpdate["social_situation"].(string) != ""},
+		Address_from_national_id_card: sql.NullString{String: casesUpdate["address_from_national_id_card"].(string), Valid: casesUpdate["address_from_national_id_card"].(string) != ""},
+		Actual_address:                sql.NullString{String: casesUpdate["actual_address"].(string), Valid: casesUpdate["actual_address"].(string) != ""},
+		District:                      sql.NullString{String: casesUpdate["district"].(string), Valid: casesUpdate["district"].(string) != ""},
+		Debts:                         sql.NullString{String: casesUpdate["debts"].(string), Valid: casesUpdate["debts"].(string) != ""},
+		Pension_from_husband:          sql.NullString{String: casesUpdate["pension_from_husband"].(string), Valid: casesUpdate["pension_from_husband"].(string) != ""},
+		Pension_from_father:           sql.NullString{String: casesUpdate["pension_from_father"].(string), Valid: casesUpdate["pension_from_father"].(string) != ""},
+		PhoneNumbers:                  sql.NullString{String: casesUpdate["phone_numbers"].(string), Valid: casesUpdate["phone_numbers"].(string) != ""},
+		Updated_at:                    updated_at,
 	}
+
 
 	db := config.Database()
 	defer db.Close()
@@ -488,7 +496,7 @@ func UpdateCase(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := models.CreateLogs(db, cases.Id, "تعديل على معلومات الحالة", userData.Id); err != nil {
+	if err := models.CreateLogs(db, cases.Id.String, "تعديل على معلومات الحالة", userData.Id); err != nil {
 		middleware.ErrorResopnse(w, err)
 		return
 	}

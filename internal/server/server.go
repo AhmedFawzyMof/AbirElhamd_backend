@@ -53,9 +53,9 @@ func (s *Server) Start() error {
 
 	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		r.URL.Path = filepath.Join(r.URL.Path, "index.html")
-
-		http.ServeFile(w, r, filepath.Join(s.staticPath, r.URL.Path))
-	})
+	if r.URL.Path == "/" {
+		http.ServeFile(w, r, filepath.Join(s.staticPath, "index.html"))
+		return
+	}	})
 	return http.ListenAndServe(s.listenAddr, middleware.CorsMiddleware(mux))
 }

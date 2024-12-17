@@ -7,24 +7,24 @@ import (
 )
 
 type Cases struct {
-	Id                            string         `json:"id"`
-	Case_name                     string         `json:"case_name"`
-	National_id                   string         `json:"national_id"`
-	Devices_needed_for_the_case   string         `json:"devices_needed_for_the_case"`
-	Total_income                  int            `json:"total_income"`
-	Fixed_expenses                int            `json:"fixed_expenses"`
-	Pension_from_husband          string         `json:"pension_from_husband"`
-	Pension_from_father           string         `json:"pension_from_father"`
-	Debts                         string         `json:"debts"`
-	Case_type                     string         `json:"case_type"`
+	Id                            sql.NullString `json:"id"`
+	Case_name                     sql.NullString `json:"case_name"`
+	National_id                   sql.NullString `json:"national_id"`
+	Devices_needed_for_the_case   sql.NullString `json:"devices_needed_for_the_case"`
+	Total_income                  sql.NullInt32  `json:"total_income"`
+	Fixed_expenses                sql.NullInt32  `json:"fixed_expenses"`
+	Pension_from_husband          sql.NullString `json:"pension_from_husband"`
+	Pension_from_father           sql.NullString `json:"pension_from_father"`
+	Debts                         sql.NullString `json:"debts"`
+	Case_type                     sql.NullString `json:"case_type"`
 	Date_of_birth                 sql.NullString `json:"date_of_birth"`
-	Age                           int            `json:"age"`
-	Gender                        string         `json:"gender"`
-	Job                           string         `json:"job"`
-	Social_situation              string         `json:"social_situation"`
-	Address_from_national_id_card string         `json:"address_from_national_id_card"`
-	Actual_address                string         `json:"actual_address"`
-	District                      string         `json:"district"`
+	Age                           sql.NullInt32  `json:"age"`
+	Gender                        sql.NullString `json:"gender"`
+	Job                           sql.NullString `json:"job"`
+	Social_situation              sql.NullString `json:"social_situation"`
+	Address_from_national_id_card sql.NullString `json:"address_from_national_id_card"`
+	Actual_address                sql.NullString `json:"actual_address"`
+	District                      sql.NullString `json:"district"`
 	PhoneNumbers                  sql.NullString `json:"phone_numbers"`
 	Subsidies_id                  sql.NullInt32  `json:"subsidies_id"`
 	Social_status                 sql.NullInt32  `json:"social_status"`
@@ -37,6 +37,7 @@ type Cases struct {
 	Status_search_update_date     sql.NullTime   `json:"status_search_update_date"`
 	Field_research_history        sql.NullTime   `json:"field_research_history"`
 }
+
 
 type Relative struct {
 	Relative_id               sql.NullInt32
@@ -103,24 +104,24 @@ type CaseDitails struct {
 }
 
 type FilterdCases struct {
-	Id                            string         `json:"id"`
-	Case_name                     string         `json:"case_name"`
-	National_id                   string         `json:"national_id"`
-	Devices_needed_for_the_case   string         `json:"devices_needed_for_the_case"`
-	Total_income                  int            `json:"total_income"`
-	Fixed_expenses                int            `json:"fixed_expenses"`
-	Pension_from_husband          string         `json:"pension_from_husband"`
-	Pension_from_father           string         `json:"pension_from_father"`
-	Debts                         string         `json:"debts"`
-	Case_type                     string         `json:"case_type"`
+	Id                            sql.NullString `json:"id"`
+	Case_name                     sql.NullString `json:"case_name"`
+	National_id                   sql.NullString `json:"national_id"`
+	Devices_needed_for_the_case   sql.NullString `json:"devices_needed_for_the_case"`
+	Total_income                  sql.NullInt32  `json:"total_income"`
+	Fixed_expenses                sql.NullInt32  `json:"fixed_expenses"`
+	Pension_from_husband          sql.NullString `json:"pension_from_husband"`
+	Pension_from_father           sql.NullString `json:"pension_from_father"`
+	Debts                         sql.NullString `json:"debts"`
+	Case_type                     sql.NullString `json:"case_type"`
 	Date_of_birth                 sql.NullString `json:"date_of_birth"`
-	Age                           int            `json:"age"`
-	Gender                        string         `json:"gender"`
-	Job                           string         `json:"job"`
-	Social_situation              string         `json:"social_situation"`
-	Address_from_national_id_card string         `json:"address_from_national_id_card"`
-	Actual_address                string         `json:"actual_address"`
-	District                      string         `json:"district"`
+	Age                           sql.NullInt32  `json:"age"`
+	Gender                        sql.NullString `json:"gender"`
+	Job                           sql.NullString `json:"job"`
+	Social_situation              sql.NullString `json:"social_situation"`
+	Address_from_national_id_card sql.NullString `json:"address_from_national_id_card"`
+	Actual_address                sql.NullString `json:"actual_address"`
+	District                      sql.NullString `json:"district"`
 	PhoneNumbers                  sql.NullString `json:"phone_numbers"`
 	Subsidies_id                  sql.NullInt32  `json:"subsidies_id"`
 	Social_status                 sql.NullInt32  `json:"social_status"`
@@ -132,17 +133,17 @@ type FilterdCases struct {
 	Case_entry_date               sql.NullTime   `json:"case_entry_date"`
 	Status_search_update_date     sql.NullTime   `json:"status_search_update_date"`
 	Field_research_history        sql.NullTime   `json:"field_research_history"`
-	Relative_id                   sql.NullInt32
-	Relative_type                 sql.NullString
-	Relative_name                 sql.NullString
-	Relative_national_id          sql.NullString
-	Relative_date_of_birth        sql.NullString
-	Relative_age                  sql.NullInt32
-	Relative_gender               sql.NullString
-	Relative_job                  sql.NullString
-	Relative_social_situation     sql.NullString
-	Relative_health_status        sql.NullString
-	Relative_education            sql.NullString
+	Relative_id                   sql.NullInt32  `json:"relative_id"`
+	Relative_type                 sql.NullString `json:"relative_type"`
+	Relative_name                 sql.NullString `json:"relative_name"`
+	Relative_national_id          sql.NullString `json:"relative_national_id"`
+	Relative_date_of_birth        sql.NullString `json:"relative_date_of_birth"`
+	Relative_age                  sql.NullInt32  `json:"relative_age"`
+	Relative_gender               sql.NullString `json:"relative_gender"`
+	Relative_job                  sql.NullString `json:"relative_job"`
+	Relative_social_situation     sql.NullString `json:"relative_social_situation"`
+	Relative_health_status        sql.NullString `json:"relative_health_status"`
+	Relative_education            sql.NullString `json:"relative_education"`
 }
 
 func (ca Cases) Create(db *sql.DB) error {
@@ -192,7 +193,7 @@ func (ca CaseDitails) Get(db *sql.DB) (CaseDitails, error) {
 			cases.id, cases.case_name, cases.national_id, cases.devices_needed_for_the_case, cases.total_income,
 			cases.fixed_expenses, cases.pension_from_husband, cases.pension_from_father, cases.debts, cases.case_type,
 			cases.date_of_birth, cases.age, cases.gender, cases.job, cases.social_situation, cases.address_from_national_id_card,
-			cases.actual_address, cases.district, cases.phone_numbers, cases.created_at, cases.updated_at, cases.date_of_social_situation, cases.case_entry_date, cases.status_search_update_date, cases.field_research_history, 
+			cases.actual_address, cases.district, cases.phone_numbers, cases.created_at, cases.updated_at, cases.date_of_social_situation, cases.case_entry_date, cases.status_search_update_date, cases.field_research_history,
 			husband.id, husband.name AS husband_name, husband.national_id AS husband_national_id, husband.date_of_birth AS husband_date_of_birth, husband.age AS husband_age,
 			husband.gender AS husband_gender, socialstatusofthecase.id, socialstatusofthecase.properties, socialstatusofthecase.health_status,
 			socialstatusofthecase.education, socialstatusofthecase.number_of_family_members, socialstatusofthecase.number_of_registered_children,
